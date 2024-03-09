@@ -159,4 +159,23 @@ router.post(
   }
 );
 
+router.get("/get-user", authenticateUser, async (req, res) => {
+  try {
+    const user = await Users.findOne({
+      where: { id: req.user.id },
+    });
+
+    res.json({
+      success: true,
+      user: user,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      errors: "Internal Server Error",
+    });
+  }
+});
+
 module.exports = router;
